@@ -24,10 +24,9 @@ class GoogleFontsDescriptor {
 /// is not of [expectedLength] bytes length, the font will not be loaded, and
 /// the file will not be stored on the device.
 class GoogleFontsFile {
-  GoogleFontsFile(this.expectedFileHash, this.expectedLength);
+  GoogleFontsFile(this.path, this.expectedFileHash, this.expectedLength);
 
   final String expectedFileHash;
   final int expectedLength;
-
-  String get url => 'https://fonts.gstatic.com/s/a/$expectedFileHash.ttf';
+  final String path;
 }

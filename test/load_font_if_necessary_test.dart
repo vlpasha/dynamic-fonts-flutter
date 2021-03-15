@@ -23,6 +23,7 @@ class MockHttpClient extends Mock implements http.Client {
 
 class MockAssetManifest extends Mock implements AssetManifest {}
 
+const _fakePath = 'test.ttf';
 const _fakeResponse = 'fake response body - success';
 // The number of bytes in _fakeResponse.
 const _fakeResponseLengthInBytes = 28;
@@ -30,6 +31,7 @@ const _fakeResponseLengthInBytes = 28;
 const _fakeResponseHash =
     '1194f6ffe4d2f05258573616a77932c38041f3102763096c19437c3db1818a04';
 final _fakeResponseFile = GoogleFontsFile(
+  _fakePath,
   _fakeResponseHash,
   _fakeResponseLengthInBytes,
 );

@@ -99,6 +99,7 @@ void _initCustomFonts() {
   );
 }
 
+// TODO: Remake to actual API
 class _FiraGoFile extends DynamicFontsFile {
   _FiraGoFile(this.variant, String expectedFileHash, int expectedLength)
       : super(expectedFileHash, expectedLength);

@@ -254,8 +254,6 @@ class DynamicFontsVariant extends GoogleFontsVariant {
 /// }
 /// ```
 abstract class DynamicFontsFile extends GoogleFontsFile {
-  DynamicFontsFile(String expectedFileHash, int expectedLength)
-      : super(expectedFileHash, expectedLength);
-
-  String get url;
+  DynamicFontsFile(String path, String expectedFileHash, int expectedLength)
+      : super(path, expectedFileHash, expectedLength);
 }

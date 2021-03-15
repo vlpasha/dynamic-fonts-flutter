@@ -133,42 +133,16 @@ Future<void> loadFontIfNecessary(GoogleFontsDescriptor descriptor) async {
   try {
     Future<ByteData?>? byteData;
 
-    // Check if this font can be loaded by the pre-bundled assets.
-    final assetManifestJson = await assetManifest.json();
-    final assetPath = _findFamilyWithVariantAssetPath(
-      descriptor.familyWithVariant,
-      assetManifestJson,
-    );
-    if (assetPath != null) {
-      byteData = rootBundle.load(assetPath);
-    }
-    if (await byteData != null) {
-      return loadFontByteData(familyWithVariantString, byteData);
-    }
-
     // Check if this font can be loaded from the device file system.
-    byteData = file_io.loadFontFromDeviceFileSystem(familyWithVariantString);
+    byteData = file_io.loadFontFromDeviceFileSystem(descriptor.file.path);
 
     if (await byteData != null) {
       return loadFontByteData(familyWithVariantString, byteData);
     }
 
-    // Attempt to load this font via http, unless disallowed.
-    if (DynamicFonts.config.allowRuntimeFetching) {
-      byteData = _httpFetchFontAndSaveToDevice(
-        familyWithVariantString,
-        descriptor.file,
-      );
-      if (await byteData != null) {
-        return loadFontByteData(familyWithVariantString, byteData);
-      }
-    } else {
-      throw Exception(
-        "GoogleFonts.config.allowRuntimeFetching is false but font $fontName was not "
-        "found in the application assets. Ensure $fontName.otf exists in a "
-        "folder that is included in your pubspec's assets.",
-      );
-    }
+    throw Exception(
+      "Font $fontName was not found in ${descriptor.file.path}",
+    );
   } catch (e) {
     _loadedFonts.remove(familyWithVariantString);
     print('Error: google_fonts was unable to load font $fontName because the '
@@ -211,42 +185,6 @@ GoogleFontsVariant _closestMatch(
     }
   }
   return bestMatch;
-}
-
-/// Fetches a font with [fontName] from the [fontUrl] and saves it locally if
-/// it is the first time it is being loaded.
-///
-/// This function can return `null` if the font fails to load from the URL.
-Future<ByteData> _httpFetchFontAndSaveToDevice(
-  String fontName,
-  GoogleFontsFile file,
-) async {
-  final uri = Uri.tryParse(file.url);
-  if (uri == null) {
-    throw Exception('Invalid fontUrl: ${file.url}');
-  }
-
-  http.Response response;
-  try {
-    response = await httpClient.get(uri);
-  } catch (e) {
-    throw Exception('Failed to load font with url: ${file.url}');
-  }
-  if (response.statusCode == 200) {
-    if (!_isFileSecure(file, response.bodyBytes)) {
-      throw Exception(
-        'File from ${file.url} did not match expected length and checksum.',
-      );
-    }
-
-    _unawaited(
-        file_io.saveFontToDeviceFileSystem(fontName, response.bodyBytes));
-
-    return ByteData.view(response.bodyBytes.buffer);
-  } else {
-    // If that call was not successful, throw an error.
-    throw Exception('Failed to load font with url: ${file.url}');
-  }
 }
 
 // This logic is taken from the following section of the minikin library, which
