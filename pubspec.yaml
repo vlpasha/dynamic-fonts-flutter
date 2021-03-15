@@ -11,12 +11,12 @@ dependencies:
     sdk: flutter
   http: ^0.12.0
   path_provider: ^2.0.0
-  crypto: ^3.0.0
+  crypto: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mockito: ^5.0.0
+  mockito: ^4.0.0
   mustache: ^1.1.1
   pedantic: ^1.8.0
   protobuf: ^1.0.1
