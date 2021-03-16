@@ -11,8 +11,8 @@ Future<void> saveFontToDeviceFileSystem(String path, List<int> bytes) async {
 // Font file must be located in ApplicationSupportDirectory
 Future<ByteData?> loadFontFromDeviceFileSystem(String path) async {
   try {
-    final loaclPath = await _localPath;
-    final file = File('$_localPath/$path');
+    final localPath = await _localPath;
+    final file = File('$localPath/$path');
     final fileExists = file.existsSync();
     if (fileExists) {
       List<int> contents = await file.readAsBytes();
