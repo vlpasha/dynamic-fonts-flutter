@@ -1,18 +1,15 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:path_provider/path_provider.dart';
-
 Future<void> saveFontToDeviceFileSystem(String path, List<int> bytes) async {
   final file = File('$path');
   await file.writeAsBytes(bytes);
 }
 
-// Font file must be located in ApplicationSupportDirectory
+/// path must point to existing .ttf font
 Future<ByteData?> loadFontFromDeviceFileSystem(String path) async {
   try {
-    final localPath = await _localPath;
-    final file = File('$localPath/$path');
+    final file = File(path);
     final fileExists = file.existsSync();
     if (fileExists) {
       List<int> contents = await file.readAsBytes();
@@ -25,9 +22,4 @@ Future<ByteData?> loadFontFromDeviceFileSystem(String path) async {
   }
 
   return null;
-}
-
-Future<String> get _localPath async {
-  final directory = await getApplicationSupportDirectory();
-  return directory.path;
 }
