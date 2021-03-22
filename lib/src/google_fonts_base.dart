@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
-import '../dynamic_fonts.dart';
 import 'asset_manifest.dart';
 import 'file_io.dart' // Stubbed implementation by default.
     // Concrete implementation if File IO is available.
